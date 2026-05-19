@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <title>Denver Trip</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body { background: #f4f6f9 !important; color: #111827 !important; color-scheme: light !important; }
+
+    body {
+      background: #f4f6f9 !important;
+      color: #111827;
+      font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      min-height: 100vh;
+      padding-bottom: 4rem;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 1.75rem 1.25rem 1rem;
+      border-bottom: 1px solid #dde2ea;
+      margin-bottom: 1.25rem;
+      background: #ffffff !important;
+    }
+    header h1 { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; color: #111827 !important; }
+    header p { font-size: 13px; color: #6b7280 !important; margin-top: 2px; }
+
+    .tab-groups {
+      padding: 0 1.25rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .group-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: #9ca3af !important;
+      margin-bottom: 6px;
+    }
+
+    .tab-row { display: flex; gap: 6px; }
+
+    .day-tab {
+      flex: 1;
+      padding: 10px 6px;
+      border-radius: 10px;
+      border: 1px solid #c8d0dc;
+      background: #ffffff;
+      font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .tab-main { display: block; font-size: 13px; font-weight: 600; }
+    .tab-sub  { display: block; font-size: 10px; font-weight: 400; margin-top: 2px; }
+
+    .session { display: none; padding: 0 1.25rem; }
+    .session.visible { display: block; }
+
+    .phase-header {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #6b7280 !important;
+      margin: 1.5rem 0 0.6rem;
+    }
+
+    .table-card {
+      background: #ffffff !important;
+      border: 1px solid #dde2ea;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    thead tr { border-bottom: 1px solid #dde2ea; background: #eef1f6 !important; }
+    th {
+      padding: 8px 10px;
+      text-align: left;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #9ca3af !important;
+    }
+    td { padding: 11px 10px; border-bottom: 1px solid #dde2ea; vertical-align: top; background: #ffffff !important; color: #111827 !important; }
+    tr:last-child td { border-bottom: none; }
+
+    .col-time  { width: 110px; color: #6b7280 !important; font-size: 13px; font-weight: 500; }
+    .col-event { font-weight: 500; color: #111827 !important; }
+    .col-tag   { width: 100px; text-align: right; }
+
+    .tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .tag-travel { background: #eff6ff; color: #2563eb; }
+    .tag-golf   { background: #f0fdf4; color: #16a34a; }
+    .tag-family { background: #fdf4ff; color: #9333ea; }
+    .tag-stay   { background: #f9fafb; color: #6b7280; border: 1px solid #e5e7eb; }
+    .tag-event  { background: #fff7ed; color: #ea580c; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Denver Trip</h1>
+  <p>May 20 – 24, 2026</p>
+</header>
+
+<div class="tab-groups">
+  <div>
+    <div class="group-label">Schedule</div>
+    <div class="tab-row" id="day-tabs"></div>
+  </div>
+</div>
+
+<div id="content"></div>
+
+<script>
+var days = [
+  {
+    id: "wed", label: "Wed", sub: "May 20", color: "#2563eb",
+    phase: "Wednesday",
+    rows: [
+      { time: "Noon",    event: "Pick up Mom, head to her place", tag: "travel" },
+      { time: "Evening", event: "Stay at Mom's",                  tag: "stay"   }
+    ]
+  },
+  {
+    id: "thu", label: "Thu", sub: "May 21", color: "#7c3aed",
+    phase: "Thursday",
+    rows: [
+      { time: "AM",   event: "Finn's graduation",    tag: "event"  },
+      { time: "Noon", event: "Leave with Dad, golf", tag: "golf"   },
+      { time: "PM",   event: "Stay at Dad's",        tag: "stay"   }
+    ]
+  },
+  {
+    id: "fri", label: "Fri", sub: "May 22", color: "#0891b2",
+    phase: "Friday",
+    rows: [
+      { time: "AM",         event: "Dad's place",       tag: "family" },
+      { time: "11:20 AM",   event: "Golf with Dad",     tag: "golf"   },
+      { time: "Post-round", event: "Drop off at Mom's", tag: "travel" },
+      { time: "PM",         event: "Stay at Mom's",     tag: "stay"   }
+    ]
+  },
+  {
+    id: "sat", label: "Sat", sub: "May 23", color: "#d97706",
+    phase: "Saturday",
+    rows: [
+      { time: "All day", event: "Morgan + kids",  tag: "family" },
+      { time: "Evening", event: "Dinner",         tag: "family" },
+      { time: "PM",      event: "Stay at Mom's",  tag: "stay"   }
+    ]
+  },
+  {
+    id: "sun", label: "Sun", sub: "May 24", color: "#16a34a",
+    phase: "Sunday",
+    rows: [
+      { time: "Early AM", event: "Airport drop off", tag: "travel" }
+    ]
+  }
+];
+
+var tagLabels = {
+  travel: "Travel",
+  golf:   "Golf",
+  family: "Family",
+  stay:   "Stay",
+  event:  "Event"
+};
+
+var active = "wed";
+
+function makeTable(rows) {
+  var html = '<div class="table-card"><table>';
+  html += '<thead><tr><th class="col-time">Time</th><th>Event</th><th class="col-tag">Type</th></tr></thead><tbody>';
+  for (var i = 0; i < rows.length; i++) {
+    var r = rows[i];
+    html += '<tr>';
+    html += '<td class="col-time">' + r.time + '</td>';
+    html += '<td class="col-event">' + r.event + '</td>';
+    html += '<td class="col-tag"><span class="tag tag-' + r.tag + '">' + tagLabels[r.tag] + '</span></td>';
+    html += '</tr>';
+  }
+  html += '</tbody></table></div>';
+  return html;
+}
+
+function render() {
+  var tabEl = document.getElementById('day-tabs');
+  var html = '';
+  for (var i = 0; i < days.length; i++) {
+    var d = days[i];
+    var isActive = d.id === active;
+    var bgStyle   = isActive ? 'background:' + d.color + ';border-color:' + d.color + ';' : '';
+    var mainColor = isActive ? '#ffffff' : '#6b7280';
+    var subColor  = isActive ? 'rgba(255,255,255,0.8)' : '#9ca3af';
+    html += '<button class="day-tab" style="' + bgStyle + '" onclick="setDay(\'' + d.id + '\')">';
+    html += '<span class="tab-main" style="color:' + mainColor + '">' + d.label + '</span>';
+    html += '<span class="tab-sub"  style="color:' + subColor  + '">' + d.sub   + '</span>';
+    html += '</button>';
+  }
+  tabEl.innerHTML = html;
+
+  var contentHtml = '';
+  for (var i = 0; i < days.length; i++) {
+    var d = days[i];
+    var visible = d.id === active ? ' visible' : '';
+    contentHtml += '<div class="session' + visible + '" id="s-' + d.id + '">';
+    contentHtml += '<div class="phase-header">' + d.phase + '</div>';
+    contentHtml += makeTable(d.rows);
+    contentHtml += '</div>';
+  }
+  document.getElementById('content').innerHTML = contentHtml;
+}
+
+function setDay(id) { active = id; render(); }
+
+render();
+</script>
+
+</body>
+</html>
