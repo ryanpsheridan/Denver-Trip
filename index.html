@@ -142,7 +142,7 @@ var days = [
     id: "wed", label: "Wed", sub: "May 20", color: "#2563eb",
     phase: "Wednesday",
     rows: [
-      { time: "Noon",    event: "Mom picks up Ryan at airport", tag: "travel" },
+      { time: "Noon",    event: "Mom airport pickup", tag: "travel" },
       { time: "Evening", event: "Stay at Mom's",                         tag: "stay"   }
     ]
   },
@@ -150,9 +150,10 @@ var days = [
     id: "thu", label: "Thu", sub: "May 21", color: "#7c3aed",
     phase: "Thursday",
     rows: [
-      { time: "AM",   event: "Finn's graduation",    tag: "event"  },
-      { time: "Noon", event: "Leave with Dad — Tee time 12:00 PM", tag: "golf"   },
-      { time: "PM",   event: "Stay at Dad's",        tag: "stay"   }
+      { time: "AM",   event: "Finn's graduation",  tag: "event"  },
+      { time: "10:30 AM", event: "Leave with Dad",      tag: "travel" },
+      { time: "Noon", event: "Tee time 12:00 PM",   tag: "golf"   },
+      { time: "PM",   event: "Stay at Dad's",       tag: "stay"   }
     ]
   },
   {
@@ -178,7 +179,8 @@ var days = [
     id: "sun", label: "Sun", sub: "May 24", color: "#16a34a",
     phase: "Sunday",
     rows: [
-      { time: "Early AM", event: "Mom airport drop off — 9:00 AM flight", tag: "travel" }
+      { time: "Early AM", event: "Mom airport drop off", tag: "travel" },
+      { time: "9:00 AM",  event: "Flight departs",       tag: "travel" }
     ]
   }
 ];
